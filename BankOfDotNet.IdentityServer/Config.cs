@@ -39,7 +39,8 @@ namespace BankOfDotNet.IdentityServer
         {
             return new List<ApiResource>()
             {
-                new ApiResource("bankOfDotNetApi","Customer  Api for BankOfDotNet")
+                new ApiResource("bankOfDotNetApi","Customer  Api for BankOfDotNet"),
+                new ApiResource("sigavapi","API SIGAVI")
             };
         }
 
@@ -47,6 +48,17 @@ namespace BankOfDotNet.IdentityServer
         {
             return new List<Client>
             {
+                 new Client()
+                {
+                    ClientId = "client-sigav",
+                    AllowedGrantTypes  = { GrantType.ClientCredentials },
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                   // AllowedScopes = { "sigavapi", "bankOfDotNetApi" },
+                    AllowedScopes = { "bankOfDotNetApi", "sigavapi" },
+                },
                 new Client()
                 {
                     ClientId = "client",
@@ -55,7 +67,7 @@ namespace BankOfDotNet.IdentityServer
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "bankOfDotNetApi","teste" }
+                    AllowedScopes = { "bankOfDotNetApi", "sigavapi" },
                 },
 
                 //Resource Owner grant type
@@ -67,6 +79,7 @@ namespace BankOfDotNet.IdentityServer
                     {
                         new Secret("secret".Sha256())
                     },
+
                     AllowedScopes = { "bankOfDotNetApi" }
                 },
 
@@ -78,14 +91,26 @@ namespace BankOfDotNet.IdentityServer
 
                     RedirectUris = { "http://localhost:53445/signin-oidc" },
                     PostLogoutRedirectUris = { "http://localhost:53445/signout-callback-oidc"},
-
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     }
                 },
-                
+
+                 new Client
+                 {
+                     ClientId = "swagapi",
+                    ClientName = "Swagger API",
+                     AllowedGrantTypes = GrantTypes.Implicit,
+                     AllowAccessTokensViaBrowser =true,
+                      RequireClientSecret = false,
+                     RedirectUris = { "http://localhost:5001/swagger/oauth2-redirect.html" },
+                     PostLogoutRedirectUris = { "http://localhost:5001/swagger" },
+                     AllowedCorsOrigins = {"http://localhost:5001"},
+
+                     AllowedScopes = { "bankOfDotNetApi" }
+                 }
             };
         }
     }

@@ -53,6 +53,7 @@ namespace BankOfDotNet.IdentityServer
         {
 
             InitializeIdentityServerDatabase(app);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -87,6 +88,7 @@ namespace BankOfDotNet.IdentityServer
 
                 if (!context.IdentityResources.Any())
                 {
+                    
                     foreach (var resource in Config.GetIdentityResources())
                     {
                         context.IdentityResources.Add(resource.ToEntity());
@@ -95,6 +97,8 @@ namespace BankOfDotNet.IdentityServer
                     context.SaveChanges();
 
                 }
+
+
 
                 if (!context.ApiResources.Any())
                 {
